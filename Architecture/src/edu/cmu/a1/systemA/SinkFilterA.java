@@ -1,15 +1,16 @@
-package edu.cmu.a1.systemB;
+package edu.cmu.a1.systemA;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+
 import edu.cmu.a1.common.Configuration;
 import edu.cmu.a1.common.FilterFramework;
 import edu.cmu.a1.common.Record;
 
-public class SinkFilterB2 extends FilterFramework
+public class SinkFilterA extends FilterFramework
 {
 	private String fileName;
-	public SinkFilterB2(int inputPortNum, int outputPortNum, String fileName) {
+	public SinkFilterA(int inputPortNum, int outputPortNum, String fileName) {
 		super(inputPortNum, outputPortNum);
 		this.fileName = fileName;
 	}
@@ -17,9 +18,14 @@ public class SinkFilterB2 extends FilterFramework
 	public void run()
 	{
 		// Next we write a message to the terminal to let the world know we are alive...
+		System.out.print( "\n" + this.getName() + "::SinkFilter A starts working ");
 		try {
 			BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(fileName)) ;
-
+			//Time:               Temperature (C):    Altitude (m):
+			//-----------------------------------------------------
+			String header = "Time:               Temperature (C):    Altitude (m):\n"
+					+ "-----------------------------------------------------";
+			bufferedWriter.write(header);
 			while (true)
 			{
 				try
@@ -32,22 +38,21 @@ public class SinkFilterB2 extends FilterFramework
 					Configuration.Field formatList[] = {
 							Configuration.Field.TIMESTAMP,
 							Configuration.Field.TEMPERATURE,
-							Configuration.Field.ALTITUDE,
-							Configuration.Field.PRESSURE};
+							Configuration.Field.ALTITUDE,};
 
 					String str= record.printFormat(formatList);
 					bufferedWriter.write(str);
 
 				} // try
 				catch (EndOfStreamException e){
+					System.out.print( "\n" + this.getName() + "::SinkFilter A Exiting; all bytes are written in output file" );
 					ClosePorts();
 					bufferedWriter.close();
 					break;
 				} // catch
 			}
-		} catch (IOException e1) {
-			e1.printStackTrace();
-			
+		} catch (IOException iox) {
+			System.out.print( "\n" + this.getName() + ":: SinkFilter A :: Problem writing output data file::" + iox );
 		}
 	} // run
 

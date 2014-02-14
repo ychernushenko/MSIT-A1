@@ -1,7 +1,6 @@
-package edu.cmu.a1.systemA;
+package edu.cmu.a1.systemC;
 
-import edu.cmu.a1.modules.AltitudeConvertFilter;
-import edu.cmu.a1.modules.TemperatureFilter;
+import edu.cmu.a1.modules.*;
 
 
 /******************************************************************************************************************
@@ -24,7 +23,7 @@ import edu.cmu.a1.modules.TemperatureFilter;
  * Internal Methods:	None
  *
  ******************************************************************************************************************/
-public class Plumber
+public class PlumberC
 {
 	public static void main( String argv[])
 	{
@@ -32,28 +31,28 @@ public class Plumber
 		 * Here we instantiate three filters.
 		 ****************************************************************************/
 
-		SourceFilter sourceFilter = new SourceFilter(1,1);
-		AltitudeConvertFilter altitudeConvertFilter = new AltitudeConvertFilter(1,1);
-		TemperatureFilter temperatureFilter = new TemperatureFilter(1,1);
-		SinkFilter sinkFilter = new SinkFilter(1,1);
+		SourceFilter sourceFirstFilter = new SourceFilter(1, 1, "C:/Users/kosty_000/Documents/CMU/2nd Semester/S14-Architectures for Software Systems/Projects/A1/MSIT-A1/Architecture/src/edu/cmu/a1/SubSetA.dat");
+		SourceFilter sourceSecondFilter = new SourceFilter(1, 1, "C:/Users/kosty_000/Documents/CMU/2nd Semester/S14-Architectures for Software Systems/Projects/A1/MSIT-A1/Architecture/src/edu/cmu/a1/SubSetB.dat");
+		MergeFilter mergeFilter = new MergeFilter(2,1);
+		SinkFilterC sinkFilter = new SinkFilterC(1,1);
+	
 		/****************************************************************************
 		 * Here we connect the filters starting with the sink filter (Filter 1) which
 		 * we connect to Filter2 the middle filter. Then we connect Filter2 to the
 		 * source filter (Filter3).
 		 ****************************************************************************/
-
-		sinkFilter.Connect(altitudeConvertFilter,0,0); // This esstially says, "connect sinkFilter input port to altitudeConvertFilter output port
-		altitudeConvertFilter.Connect(temperatureFilter, 0, 0); // This esstially says, "connect altitudeConvertFilter intput port to temperatureFilter output port
-		temperatureFilter.Connect(sourceFilter, 0, 0);// This esstially says, "connect temperatureFilter input port to sourceFilter output port
+		sinkFilter.Connect(mergeFilter, 0, 0);
+		mergeFilter.Connect(sourceFirstFilter, 0, 0);
+		mergeFilter.Connect(sourceSecondFilter, 1, 0);
+		
 		/****************************************************************************
 		 * Here we start the filters up. All-in-all,... its really kind of boring.
 		 ****************************************************************************/
 		
-		sourceFilter.start();
-		altitudeConvertFilter.start();
-		temperatureFilter.start();
+		sourceFirstFilter.start();
+		sourceSecondFilter.start();
+		mergeFilter.start();
 		sinkFilter.start();
-
 	} // main
 
 } // Plumber

@@ -37,6 +37,7 @@ public class AltitudeConvertFilter extends FilterFramework
 		long measurement;				// This is the word used to store all measurements - conversions are illustrated.
 		int id;							// This is the measurement id
 
+		System.out.print( "\n" + this.getName() + "::Altitude Convert Filter Reading ");
 		while (true)
 		{
 			try
@@ -93,6 +94,7 @@ public class AltitudeConvertFilter extends FilterFramework
 			 ********************************************************************************/
 			catch (EndOfStreamException e)
 			{
+				System.out.print( "\n" + this.getName() + "::AltitudeFilter Exiting; converting completed");
 				ClosePorts();
 				break;
 			} // catch

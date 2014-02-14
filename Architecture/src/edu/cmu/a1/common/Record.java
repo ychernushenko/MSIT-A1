@@ -15,10 +15,8 @@ public class Record {
 	private double attitude;
 	private double velocity;
 	private double pressure;
-	private double isWild;
 	public Record() {
 		this.timeStamp = "";
-		isWild = Configuration.isnormal;
 	}
 	
 	
@@ -43,11 +41,11 @@ public class Record {
 			else if(id == 5) 
 				attitude = Double.longBitsToDouble(measurement);
 		}
-		if(offset+Configuration.IdLength+Configuration.MeasurementLength == buffer.length){
+		/*if(offset+Configuration.IdLength+Configuration.MeasurementLength == buffer.length){
 			long measurement = converter.byteToMeasurement(buffer, offset+Configuration.IdLength);
 			isWild = Double.longBitsToDouble(measurement);
 		}// insert a wild point field
-		
+		*/
 		return;
 	}
 	

@@ -35,7 +35,7 @@ public class TemperatureFilter extends FilterFramework
 	{
 		long measurement;				// This is the word used to store all measurements - conversions are illustrated.
 		int id;							// This is the measurement id
-
+		System.out.print( "\n" + this.getName() + "::Temperature Convert Filter Reading ");
 		while (true)
 		{
 			try
@@ -92,6 +92,7 @@ public class TemperatureFilter extends FilterFramework
 			catch (EndOfStreamException e)
 			{
 				ClosePorts();
+				System.out.print( "\n" + this.getName() + "::Temperature Exiting; converting completed");
 				break;
 			} // catch
 

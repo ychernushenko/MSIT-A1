@@ -1,4 +1,4 @@
-package edu.cmu.a1.systemB;
+package edu.cmu.a1.modules;
 /******************************************************************************************************************
  * File:SourceFilter.java
  * Course: 17655
@@ -24,13 +24,15 @@ import edu.cmu.a1.common.FilterFramework;
 
 
 public class SourceFilter extends FilterFramework{
-
-	public SourceFilter(int inputPortNum, int outputPortNum) {
+	
+	private String fileName;
+	public SourceFilter(int inputPortNum, int outputPortNum, String fileName) {
 		super(inputPortNum, outputPortNum);
+		this.fileName = fileName;
 	}
 
 	public void run(){
-		String fileName = "D:/MSIT-SE/Architecture/Group Assignment/DataSets/FlightData.dat";	// Input data file.
+		//String fileName = "D:/MSIT-SE/Architecture/Group Assignment/DataSets/FlightData.dat";	// Input data file.
 		DataInputStream in = null;			// File stream reference.
 		byte databyte = 0;					// The byte of data read from the file
 
@@ -61,12 +63,14 @@ public class SourceFilter extends FilterFramework{
 			try{
 				in.close();
 				ClosePorts();
+				System.out.println( "\n" + this.getName() + "::SourceFilterA :: Read file complete");
 
 			}
 			/***********************************************************************************
 			 *	The following exception is raised should we have a problem closing the file.
 			 ***********************************************************************************/
 			catch (Exception closeerr){
+				System.out.println("\n" + this.getName() + "::SourceFilterA ::Problem closing input data file::" + closeerr);
 			} // catch
 
 		} // catch
@@ -77,7 +81,7 @@ public class SourceFilter extends FilterFramework{
 
 		catch ( IOException iox )
 		{
-			System.out.println("\n" + this.getName() + "::Problem reading input data file::" + iox );
+			System.out.println("\n" + this.getName() + "::SourceFilterA ::Problem reading input data file::" + iox );
 
 		} // catch
 

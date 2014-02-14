@@ -23,22 +23,24 @@ import edu.cmu.a1.modules.*;
  * Internal Methods:	None
  *
  ******************************************************************************************************************/
-public class Plumber
+public class PlumberB
 {
-	public static void main( String argv[])
+	public static void main( String args[])
 	{
 		/****************************************************************************
 		 * Here we instantiate three filters.
 		 ****************************************************************************/
-
-		SourceFilter sourceFilter = new SourceFilter(1,1);
+		String inputFileName = "D:/MSIT-SE/Architecture/Group Assignment/DataSets/FlightData.dat";
+		String wildPointFileName = "D:/MSIT-SE/Architecture/Group Assignment/DataSets/WildPoints.dat";
+		//String outputBFileName = "D:/MSIT-SE/Architecture/Group Assignment/DataSets/outputB.dat";
+		SourceFilter sourceFilter = new SourceFilter(1,1,inputFileName);
 		AltitudeConvertFilter altitudeConvertFilter = new AltitudeConvertFilter(1,1);
 		TemperatureFilter temperatureFilter = new TemperatureFilter(1,1);
 		
 		
 		SplitterFilter splitterFilter = new SplitterFilter(1, 1);
 		PressureWildPointFilter pressureWildPointFilter = new PressureWildPointFilter(1, 1);
-		SinkFilterB2 sinkFilterB2 = new SinkFilterB2(1,1);
+		SinkFilterB2 sinkFilterB2 = new SinkFilterB2(1,1,wildPointFileName);
 		/****************************************************************************
 		 * Here we connect the filters starting with the sink filter (Filter 1) which
 		 * we connect to Filter2 the middle filter. Then we connect Filter2 to the
