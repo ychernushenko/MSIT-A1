@@ -28,7 +28,7 @@ package edu.cmu.a1.systemC;
 import java.util.*;						// This class is used to interpret time words
 import java.text.SimpleDateFormat;		// This class is used to format and write time in a string format.
 
-import edu.cmu.a1.common.FilterFramework;
+import edu.cmu.a1.util.FilterFramework;
 
 public class SinkFilterC extends FilterFramework
 {

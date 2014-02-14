@@ -1,8 +1,8 @@
 package edu.cmu.a1.systemC;
 
-import edu.cmu.a1.common.Configuration;
-import edu.cmu.a1.common.FilterFramework;
-import edu.cmu.a1.common.Record;
+import edu.cmu.a1.util.Configuration;
+import edu.cmu.a1.util.FilterFramework;
+import edu.cmu.a1.util.Record;
 
 /******************************************************************************************************************
 * File:MiddleFilter.java

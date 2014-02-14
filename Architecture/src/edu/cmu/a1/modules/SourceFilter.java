@@ -20,7 +20,7 @@ package edu.cmu.a1.modules;
 
 import java.io.*; // note we must add this here since we use BufferedReader class to read from the keyboard
 
-import edu.cmu.a1.common.FilterFramework;
+import edu.cmu.a1.util.FilterFramework;
 
 
 public class SourceFilter extends FilterFramework{

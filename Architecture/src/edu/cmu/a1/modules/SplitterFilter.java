@@ -1,6 +1,6 @@
 package edu.cmu.a1.modules;
 
-import edu.cmu.a1.common.FilterFramework;
+import edu.cmu.a1.util.FilterFramework;
 
 /******************************************************************************************************************
 * File:MiddleFilter.java

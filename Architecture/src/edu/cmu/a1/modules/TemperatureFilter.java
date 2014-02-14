@@ -1,7 +1,7 @@
 package edu.cmu.a1.modules;
-import edu.cmu.a1.common.Configuration;
-import edu.cmu.a1.common.Converter;
-import edu.cmu.a1.common.FilterFramework;
+import edu.cmu.a1.util.Configuration;
+import edu.cmu.a1.util.Converter;
+import edu.cmu.a1.util.FilterFramework;
 
 
 

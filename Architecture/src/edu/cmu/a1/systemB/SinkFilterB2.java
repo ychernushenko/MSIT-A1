@@ -2,9 +2,10 @@ package edu.cmu.a1.systemB;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import edu.cmu.a1.common.Configuration;
-import edu.cmu.a1.common.FilterFramework;
-import edu.cmu.a1.common.Record;
+
+import edu.cmu.a1.util.Configuration;
+import edu.cmu.a1.util.FilterFramework;
+import edu.cmu.a1.util.Record;
 
 public class SinkFilterB2 extends FilterFramework
 {
