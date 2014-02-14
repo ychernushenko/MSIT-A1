@@ -51,11 +51,12 @@ public class Record {
 		return;
 	}
 	
-	
-	
-	
 	public String getTimeStamp() {
 		return timeStamp;
+	}
+	
+	public long getTimeStampLong() {
+		return timestamplong;
 	}
 	
 	public void setTimeStamp(long timelong){

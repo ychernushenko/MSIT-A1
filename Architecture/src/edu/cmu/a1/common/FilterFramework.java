@@ -190,7 +190,7 @@ public class FilterFramework extends Thread
 
 				} //if
 
-				sleep(250);
+				//sleep(250);
 
 			} // while
 
