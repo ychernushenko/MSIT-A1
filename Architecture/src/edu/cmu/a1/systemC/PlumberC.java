@@ -1,6 +1,12 @@
 package edu.cmu.a1.systemC;
 
 import edu.cmu.a1.modules.*;
+import edu.cmu.a1.util.Configuration;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 
 /******************************************************************************************************************
@@ -31,8 +37,8 @@ public class PlumberC
 		 * Here we instantiate three filters.
 		 ****************************************************************************/
 
-		SourceFilter sourceFirstFilter = new SourceFilter(1, 1, "C:/Users/kosty_000/Documents/CMU/2nd Semester/S14-Architectures for Software Systems/Projects/A1/MSIT-A1/Architecture/src/edu/cmu/a1/SubSetA.dat");
-		SourceFilter sourceSecondFilter = new SourceFilter(1, 1, "C:/Users/kosty_000/Documents/CMU/2nd Semester/S14-Architectures for Software Systems/Projects/A1/MSIT-A1/Architecture/src/edu/cmu/a1/SubSetB.dat");
+		SourceFilter sourceFirstFilter = new SourceFilter(1, 1, Configuration.ReadProperty("SubSetA"));
+		SourceFilter sourceSecondFilter = new SourceFilter(1, 1, Configuration.ReadProperty("SubSetB"));
 		MergeFilter mergeFilter = new MergeFilter(2,1);
 		SinkFilterC sinkFilter = new SinkFilterC(1,1);
 	

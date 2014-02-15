@@ -1,5 +1,7 @@
 package edu.cmu.a1.systemC;
 
+import java.io.IOException;
+
 import edu.cmu.a1.util.Configuration;
 import edu.cmu.a1.util.FilterFramework;
 import edu.cmu.a1.util.Record;
@@ -107,7 +109,7 @@ public class MergeFilter extends FilterFramework
 							}
 						}
 					}
-					catch(Exception e)
+					catch(IOException e)
 					{
 						
 					}

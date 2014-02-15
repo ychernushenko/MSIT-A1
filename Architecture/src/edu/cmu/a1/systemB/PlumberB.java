@@ -1,6 +1,7 @@
 package edu.cmu.a1.systemB;
 
 import edu.cmu.a1.modules.*;
+import edu.cmu.a1.util.Configuration;
 
 
 /******************************************************************************************************************
@@ -30,8 +31,8 @@ public class PlumberB
 		/****************************************************************************
 		 * Here we instantiate three filters.
 		 ****************************************************************************/
-		String inputFileName = "D:/MSIT-SE/Architecture/Group Assignment/DataSets/FlightData.dat";
-		String wildPointFileName = "D:/MSIT-SE/Architecture/Group Assignment/DataSets/WildPoints.dat";
+		String inputFileName = Configuration.ReadProperty("FlightData");
+		String wildPointFileName = Configuration.ReadProperty("WildPointData");
 		//String outputBFileName = "D:/MSIT-SE/Architecture/Group Assignment/DataSets/outputB.dat";
 		SourceFilter sourceFilter = new SourceFilter(1,1,inputFileName);
 		AltitudeConvertFilter altitudeConvertFilter = new AltitudeConvertFilter(1,1);

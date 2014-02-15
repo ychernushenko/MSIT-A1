@@ -3,6 +3,7 @@ package edu.cmu.a1.systemA;
 import edu.cmu.a1.modules.AltitudeConvertFilter;
 import edu.cmu.a1.modules.SourceFilter;
 import edu.cmu.a1.modules.TemperatureFilter;
+import edu.cmu.a1.util.Configuration;
 
 
 /******************************************************************************************************************
@@ -32,8 +33,8 @@ public class PlumberA
 		/****************************************************************************
 		 * Here we instantiate three filters.
 		 ****************************************************************************/
-		String inputFileName = "D:/MSIT-SE/Architecture/Group Assignment/DataSets/FlightData.dat";
-		String outputFileName = "D:/MSIT-SE/Architecture/Group Assignment/DataSets/OutputA.dat";
+		String inputFileName = Configuration.ReadProperty("FlightData"); 
+		String outputFileName = Configuration.ReadProperty("OutputA");
 		SourceFilter sourceFilter = new SourceFilter(1,1,inputFileName);
 		AltitudeConvertFilter altitudeConvertFilter = new AltitudeConvertFilter(1,1);
 		TemperatureFilter temperatureFilter = new TemperatureFilter(1,1);
