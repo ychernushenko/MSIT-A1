@@ -1,8 +1,12 @@
-package edu.cmu.a1.systemB;
+package edu.cmu.a1.systemC;
 
 import edu.cmu.a1.modules.*;
-import edu.cmu.a1.systemA.SinkFilterA;
 import edu.cmu.a1.util.Configuration;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 
 /******************************************************************************************************************
@@ -25,47 +29,36 @@ import edu.cmu.a1.util.Configuration;
  * Internal Methods:	None
  *
  ******************************************************************************************************************/
-public class PlumberB
+public class PlumberC
 {
-	public static void main( String args[])
+	public static void main( String argv[])
 	{
 		/****************************************************************************
 		 * Here we instantiate three filters.
 		 ****************************************************************************/
-		String inputFileName = Configuration.ReadProperty("FlightData"); 
-		String wildPointFileName = Configuration.ReadProperty("WildPointData");
-		String outputBFileName = "outputB.dat";
-		
-		SourceFilter sourceFilter = new SourceFilter(1,1,inputFileName);
-		AltitudeConvertFilter altitudeConvertFilter = new AltitudeConvertFilter(1,1);
-		TemperatureFilter temperatureFilter = new TemperatureFilter(1,1);
-		SplitterFilter splitterFilter = new SplitterFilter(1, 2);
-		PressureWildPointFilter pressureWildPointFilter = new PressureWildPointFilter(1, 1);
-		SinkFilterB2 sinkFilterB2 = new SinkFilterB2(1,1,wildPointFileName);
-		PressureWildPointReplacement pressureWildPointReplacement = new PressureWildPointReplacement(1, 1, outputBFileName);
+
+		SourceFilter sourceFirstFilter = new SourceFilter(1, 1, Configuration.ReadProperty("SubSetA"));
+		SourceFilter sourceSecondFilter = new SourceFilter(1, 1, Configuration.ReadProperty("SubSetB"));
+		MergeFilter mergeFilter = new MergeFilter(2,1);
+		SinkFilterC sinkFilter = new SinkFilterC(1,1);
+	
 		/****************************************************************************
 		 * Here we connect the filters starting with the sink filter (Filter 1) which
 		 * we connect to Filter2 the middle filter. Then we connect Filter2 to the
 		 * source filter (Filter3).
 		 ****************************************************************************/
-
-		pressureWildPointReplacement.Connect(splitterFilter, 0,1);
-		sinkFilterB2.Connect(pressureWildPointFilter, 0, 0);
-		pressureWildPointFilter.Connect(splitterFilter, 0,0);
-		splitterFilter.Connect(altitudeConvertFilter,0,0); // This esstially says, "connect sinkFilter input port to altitudeConvertFilter output port
-		altitudeConvertFilter.Connect(temperatureFilter, 0, 0); // This esstially says, "connect altitudeConvertFilter intput port to temperatureFilter output port
-		temperatureFilter.Connect(sourceFilter, 0, 0);// This esstially says, "connect temperatureFilter input port to sourceFilter output port
+		sinkFilter.Connect(mergeFilter, 0, 0);
+		mergeFilter.Connect(sourceFirstFilter, 0, 0);
+		mergeFilter.Connect(sourceSecondFilter, 1, 0);
+		
 		/****************************************************************************
 		 * Here we start the filters up. All-in-all,... its really kind of boring.
 		 ****************************************************************************/
 		
-		sourceFilter.start();
-		altitudeConvertFilter.start();
-		temperatureFilter.start();
-		splitterFilter.start();
-		pressureWildPointFilter.start();
-		sinkFilterB2.start();
-		pressureWildPointReplacement.start();
+		sourceFirstFilter.start();
+		sourceSecondFilter.start();
+		mergeFilter.start();
+		sinkFilter.start();
 	} // main
 
 } // Plumber

@@ -1,4 +1,4 @@
-package edu.cmu.a1.systemA;
+package edu.cmu.a1.systemC;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -7,23 +7,23 @@ import edu.cmu.a1.util.Configuration;
 import edu.cmu.a1.util.FilterFramework;
 import edu.cmu.a1.util.Record;
 
-public class SinkFilterA extends FilterFramework
+public class SinkFilterC1 extends FilterFramework
 {
 	private String fileName;
-	public SinkFilterA(int inputPortNum, int outputPortNum, String fName) {
+	public SinkFilterC1(int inputPortNum, int outputPortNum, String fName) {
 		super(inputPortNum, outputPortNum);
 		this.fileName = fName;
 	}
-
+	
 	public void run()
 	{
 		// Next we write a message to the terminal to let the world know we are alive...
-		System.out.print( "\n" + this.getName() + "::SinkFilter A starts working ");
+		System.out.print( "\n" + this.getName() + "::SinkFilter C starts working ");
 		try {
 			BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(this.fileName)) ;
 			//Time:               Temperature (C):    Altitude (m):
 			//-----------------------------------------------------
-			String header = "Time:               Temperature (C):    Altitude (m):\n"
+			String header = "Time:       Velocity:        Altitude:        Pressure:        Temperature:    Attitude:\n"
 					+ "-----------------------------------------------------";
 			bufferedWriter.write(header);
 			while (true)
@@ -37,22 +37,25 @@ public class SinkFilterA extends FilterFramework
 					Record record = new Record(recordBuffer);
 					Configuration.Field formatList[] = {
 							Configuration.Field.TIMESTAMP,
+							Configuration.Field.VELOCITY,
+							Configuration.Field.ALTITUDE,
+							Configuration.Field.PRESSURE,
 							Configuration.Field.TEMPERATURE,
-							Configuration.Field.ALTITUDE,};
+							Configuration.Field.ATTITUDE};
 
 					String str= record.printFormat(formatList);
 					bufferedWriter.write(str);
 
 				} // try
 				catch (EndOfStreamException e){
-					System.out.print( "\n" + this.getName() + "::SinkFilter A Exiting; all bytes are written in output file" );
+					System.out.print( "\n" + this.getName() + "::SinkFilter C Exiting; all bytes are written in output file" );
 					ClosePorts();
 					bufferedWriter.close();
 					break;
 				} // catch
 			}
 		} catch (IOException iox) {
-			System.out.print( "\n" + this.getName() + ":: SinkFilter A :: Problem writing output data file::" + iox );
+			System.out.print( "\n" + this.getName() + ":: SinkFilter C :: Problem writing output data file::" + iox );
 		}
 	} // run
 
