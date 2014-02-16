@@ -1,4 +1,4 @@
-package edu.cmu.a1.modules;
+package edu.cmu.a1.systemB;
 
 
 import edu.cmu.a1.util.Configuration;
@@ -38,21 +38,26 @@ public class PressureWildPointReplacement extends FilterFramework
 
 	public void run()
 	{
-		Record prevRecord = null;
+		//Record prevRecord = null;
 		Record prevValidRecord = null;
 		ArrayList<Record> wildPointRecords = new ArrayList<Record>(); // buffer for records with wild points
 
 
 
 		// Next we write a message to the terminal to let the world know we are alive...
-		System.out.print( "\n" + this.getName() + "::SinkFilter C starts working ");
+		System.out.print( "\n" + this.getName() + "::SinkFilter B1 starts working ");
 		try {
 			BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(this.fileName)) ;
-			//Time:               Temperature (C):    Altitude (m):
-			//-----------------------------------------------------
 			String header = "Time:       Temperature:       Altitude:        Pressure:\n"
-					+ "-----------------------------------------------------";
+					+ "-----------------------------------------------------\n";
 			bufferedWriter.write(header);
+			
+			Configuration.Field formatList[] = {
+					Configuration.Field.TIMESTAMP,
+					Configuration.Field.TEMPERATURE,
+					Configuration.Field.ALTITUDE,
+					Configuration.Field.PRESSURE};
+			
 			while (true)
 			{
 				try
@@ -71,93 +76,44 @@ public class PressureWildPointReplacement extends FilterFramework
 				// We need to compare this record with last valid record to check if it is valid.
 					 ****************************************************************************/
 
-					if(prevValidRecord == null)
+					if(prevValidRecord == null)// check if there is no preValid Record, i.e start of value.
 					{
-						if(prevRecord == null)
-						{
-							if (record.getPressure()<0.0)
-								wildPointRecords.add(record);
-						}
-						else if ((record.getPressure()<0.0) || (Math.abs(record.getPressure()-prevRecord.getPressure())>10.0))
-						{
+						if (record.getPressure()<0.0){
 							wildPointRecords.add(record);
 						}
-						else
-						{
-							for(Record r : wildPointRecords)
-							{
-								r.setPressure(record.getPressure());
-								//Print r to pipe
-								Configuration.Field formatList[] = {
-										Configuration.Field.TIMESTAMP,
-										Configuration.Field.TEMPERATURE,
-										Configuration.Field.ALTITUDE,
-										Configuration.Field.PRESSURE};
-
+						else{
+							prevValidRecord = record;// The first valid value.
+							
+							for(Record r : wildPointRecords){
+								r.setPressure(prevValidRecord.getPressure());// Use first valid value to replace wild points.
 								String str= r.printFormat(formatList);
-								System.out.println(str + "*");
+								bufferedWriter.write(str.substring(0,str.length()-1) + "*\t \n");
 							}
-							wildPointRecords.clear();
-
-							for(int i=0; i<Configuration.RecordLength;i++) 
-								WriteFilterOutputPort(recordBuffer[i],0);
-
-							//Print record to pipe
-							Configuration.Field formatList[] = {
-									Configuration.Field.TIMESTAMP,
-									Configuration.Field.TEMPERATURE,
-									Configuration.Field.ALTITUDE,
-									Configuration.Field.PRESSURE};
-
-							String str= record.printFormat(formatList);
-							System.out.println(str);
-
-							prevValidRecord = record;
 						}
 					}
 					else
 					{
-						if ((record.getPressure()<0.0) || (Math.abs(record.getPressure()-prevRecord.getPressure())>10.0))
+						if ((record.getPressure()<0.0) || (Math.abs(record.getPressure()-prevValidRecord.getPressure())>10.0))
 						{
 							wildPointRecords.add(record);
 						}
-						else
+						else // this record is valid
 						{
-							for(Record r : wildPointRecords)
+							for(Record r : wildPointRecords)//Replace all wild points in the list.
 							{
-								r.setPressure(Math.abs(record.getPressure() - prevValidRecord.getPressure())/2.0);
-								//Print r to pipe
-								Configuration.Field formatList[] = {
-										Configuration.Field.TIMESTAMP,
-										Configuration.Field.TEMPERATURE,
-										Configuration.Field.ALTITUDE,
-										Configuration.Field.PRESSURE};
-
+								r.setPressure(Math.abs(record.getPressure() + prevValidRecord.getPressure())/2.0);
 								String str= r.printFormat(formatList);
-								System.out.println(str + "*");
-
+								bufferedWriter.write(str.substring(0,str.length()-1) + "*\n");
 								prevValidRecord = r;
 							}
 							wildPointRecords.clear();
-
-							for(int i=0; i<Configuration.RecordLength;i++) 
-								WriteFilterOutputPort(recordBuffer[i],0);
-
-							//Print record to pipe
-							Configuration.Field formatList[] = {
-									Configuration.Field.TIMESTAMP,
-									Configuration.Field.TEMPERATURE,
-									Configuration.Field.ALTITUDE,
-									Configuration.Field.PRESSURE};
-
+							
+							// write this record into file.
 							String str= record.printFormat(formatList);
-							System.out.println(str);
-
+							bufferedWriter.write(str+"\n");
 							prevValidRecord = record;
 						}
 					}
-
-					prevRecord = record;
 				} // try
 
 				/*******************************************************************************
@@ -171,14 +127,8 @@ public class PressureWildPointReplacement extends FilterFramework
 					{
 						r.setPressure(prevValidRecord.getPressure());
 						//Print r to pipe
-						Configuration.Field formatList[] = {
-								Configuration.Field.TIMESTAMP,
-								Configuration.Field.TEMPERATURE,
-								Configuration.Field.ALTITUDE,
-								Configuration.Field.PRESSURE};
-
 						String str= r.printFormat(formatList);
-						System.out.println(str + "*");
+						bufferedWriter.write(str.substring(0,str.length()-1) + "*\n");
 					}
 					wildPointRecords.clear();
 

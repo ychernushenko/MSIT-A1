@@ -1,12 +1,10 @@
 package edu.cmu.a1.systemC;
 
 import edu.cmu.a1.modules.*;
+import edu.cmu.a1.systemB.PressureWildPointReplacement;
+import edu.cmu.a1.systemB.SinkFilterB;
 import edu.cmu.a1.util.Configuration;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
 
 
 /******************************************************************************************************************
@@ -40,14 +38,35 @@ public class PlumberC
 		SourceFilter sourceFirstFilter = new SourceFilter(1, 1, Configuration.ReadProperty("SubSetA"));
 		SourceFilter sourceSecondFilter = new SourceFilter(1, 1, Configuration.ReadProperty("SubSetB"));
 		MergeFilter mergeFilter = new MergeFilter(2,1);
-		SinkFilterC sinkFilter = new SinkFilterC(1,1);
+		SplitterFilter splitterFilter1 = new SplitterFilter(1, 2);
+		
+		AltitudeWildPointLoggingFilter altitudeWildPointLoggingFilter = new AltitudeWildPointLoggingFilter(1, 1);
+		SinkFilterC sinkFilterC = new SinkFilterC(1,1, Configuration.ReadProperty("LessThan10K"));
+		
+		AltitudeWildPointDeletingFilter altitudeWildPointDeletingFilter = new AltitudeWildPointDeletingFilter(1, 1);
+		SplitterFilter splitterFilter2 = new SplitterFilter(1, 2);
+		
+		PressureWildPointFilter pressureWildPointFilter = new PressureWildPointFilter(1, 1);
+		SinkFilterB sinkFilterB = new SinkFilterB(1,1,Configuration.ReadProperty("PressureWildPoints"));
+		PressureWildPointReplacement pressureWildPointReplacementFilter = new PressureWildPointReplacement(1, 1, Configuration.ReadProperty("OutputC"));
+
+		
 	
 		/****************************************************************************
 		 * Here we connect the filters starting with the sink filter (Filter 1) which
 		 * we connect to Filter2 the middle filter. Then we connect Filter2 to the
 		 * source filter (Filter3).
 		 ****************************************************************************/
-		sinkFilter.Connect(mergeFilter, 0, 0);
+		sinkFilterB.Connect(pressureWildPointFilter, 0, 0);
+		pressureWildPointFilter.Connect(splitterFilter2, 0, 1);
+		pressureWildPointReplacementFilter.Connect(splitterFilter2, 0, 0);
+		
+		splitterFilter2.Connect(altitudeWildPointDeletingFilter, 0, 0);
+		sinkFilterC.Connect(altitudeWildPointLoggingFilter, 0, 0);
+		altitudeWildPointDeletingFilter.Connect(splitterFilter1, 0, 0);
+		altitudeWildPointLoggingFilter.Connect(splitterFilter1, 0, 1);
+		
+		splitterFilter1.Connect(mergeFilter, 0, 0);
 		mergeFilter.Connect(sourceFirstFilter, 0, 0);
 		mergeFilter.Connect(sourceSecondFilter, 1, 0);
 		
@@ -58,7 +77,14 @@ public class PlumberC
 		sourceFirstFilter.start();
 		sourceSecondFilter.start();
 		mergeFilter.start();
-		sinkFilter.start();
+		splitterFilter1.start();
+		altitudeWildPointDeletingFilter.start();
+		altitudeWildPointLoggingFilter.start();
+		sinkFilterC.start();
+		splitterFilter2.start();
+		pressureWildPointFilter.start();
+		pressureWildPointReplacementFilter.start();
+		sinkFilterB.start();
 	} // main
 
 } // Plumber

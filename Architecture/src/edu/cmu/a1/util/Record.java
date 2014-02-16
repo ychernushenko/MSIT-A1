@@ -105,17 +105,18 @@ public class Record {
 		return decimalFormat.format(temperature);
 	}
 	private String formatAttitude(){
-		return String.valueOf(attitude);
+		java.text.DecimalFormat decimalFormat =new java.text.DecimalFormat("00.000000");  
+		return decimalFormat.format(attitude);
 	}
 	private String formatPressure(){
-		java.text.DecimalFormat decimalFormat =new java.text.DecimalFormat("#####");  
+		java.text.DecimalFormat decimalFormat =new java.text.DecimalFormat("00.00000");  
 		String rawPressure = decimalFormat.format(pressure);
-		//String pressureFormatString =rawPressure.replace('.', ':');
-		return rawPressure;
+		String pressureFormatString =rawPressure.replace('.', ':');
+		return pressureFormatString;
 	}
 	private String formatVelocity(){
-		return String.valueOf(velocity);
-	}
+		java.text.DecimalFormat decimalFormat =new java.text.DecimalFormat("000.00000");  
+		return decimalFormat.format(velocity);	}
 	
 	
 	public String printFormat(Field[] list){

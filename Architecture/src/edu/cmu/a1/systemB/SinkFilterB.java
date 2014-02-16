@@ -7,10 +7,10 @@ import edu.cmu.a1.util.Configuration;
 import edu.cmu.a1.util.FilterFramework;
 import edu.cmu.a1.util.Record;
 
-public class SinkFilterB2 extends FilterFramework
+public class SinkFilterB extends FilterFramework
 {
 	private String fileName;
-	public SinkFilterB2(int inputPortNum, int outputPortNum, String fileName) {
+	public SinkFilterB(int inputPortNum, int outputPortNum, String fileName) {
 		super(inputPortNum, outputPortNum);
 		this.fileName = fileName;
 	}
@@ -20,7 +20,9 @@ public class SinkFilterB2 extends FilterFramework
 		// Next we write a message to the terminal to let the world know we are alive...
 		try {
 			BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(fileName)) ;
-
+			String header = "Time:             Pressure:\n"
+					+ "-----------------------------------------------------\n";
+			bufferedWriter.write(header);
 			while (true)
 			{
 				try
@@ -32,12 +34,10 @@ public class SinkFilterB2 extends FilterFramework
 					Record record = new Record(recordBuffer);
 					Configuration.Field formatList[] = {
 							Configuration.Field.TIMESTAMP,
-							Configuration.Field.TEMPERATURE,
-							Configuration.Field.ALTITUDE,
 							Configuration.Field.PRESSURE};
 
 					String str= record.printFormat(formatList);
-					bufferedWriter.write(str);
+					bufferedWriter.write(str+"\n");
 
 				} // try
 				catch (EndOfStreamException e){

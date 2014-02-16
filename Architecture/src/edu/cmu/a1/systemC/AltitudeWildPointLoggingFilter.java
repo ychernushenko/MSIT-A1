@@ -24,9 +24,9 @@ import edu.cmu.a1.util.Record;
  *
  ******************************************************************************************************************/
 
-public class CheckAltitudeFilter extends FilterFramework
+public class AltitudeWildPointLoggingFilter extends FilterFramework
 {
-	public CheckAltitudeFilter(int inputPortNum, int outputPortNum) {
+	public AltitudeWildPointLoggingFilter(int inputPortNum, int outputPortNum) {
 		super(inputPortNum, outputPortNum);
 	}
 

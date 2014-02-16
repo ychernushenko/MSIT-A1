@@ -24,7 +24,7 @@ public class SinkFilterA extends FilterFramework
 			//Time:               Temperature (C):    Altitude (m):
 			//-----------------------------------------------------
 			String header = "Time:               Temperature (C):    Altitude (m):\n"
-					+ "-----------------------------------------------------";
+					+ "----------------------------------------------------- \n";
 			bufferedWriter.write(header);
 			while (true)
 			{
@@ -41,7 +41,7 @@ public class SinkFilterA extends FilterFramework
 							Configuration.Field.ALTITUDE,};
 
 					String str= record.printFormat(formatList);
-					bufferedWriter.write(str);
+					bufferedWriter.write(str+"\n");
 
 				} // try
 				catch (EndOfStreamException e){

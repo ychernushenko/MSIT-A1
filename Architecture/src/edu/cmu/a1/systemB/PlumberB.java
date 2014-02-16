@@ -1,7 +1,6 @@
 package edu.cmu.a1.systemB;
 
 import edu.cmu.a1.modules.*;
-import edu.cmu.a1.systemA.SinkFilterA;
 import edu.cmu.a1.util.Configuration;
 
 
@@ -34,22 +33,18 @@ public class PlumberB
 		 ****************************************************************************/
 		String inputFileName = Configuration.ReadProperty("FlightData"); 
 		String wildPointFileName = Configuration.ReadProperty("WildPointData");
-		String outputBFileName = "outputB.dat";
+		String outputBFileName =Configuration.ReadProperty("OutPutB");
 		
 		SourceFilter sourceFilter = new SourceFilter(1,1,inputFileName);
 		AltitudeConvertFilter altitudeConvertFilter = new AltitudeConvertFilter(1,1);
 		TemperatureFilter temperatureFilter = new TemperatureFilter(1,1);
 		SplitterFilter splitterFilter = new SplitterFilter(1, 2);
 		PressureWildPointFilter pressureWildPointFilter = new PressureWildPointFilter(1, 1);
-		SinkFilterB2 sinkFilterB2 = new SinkFilterB2(1,1,wildPointFileName);
-		PressureWildPointReplacement pressureWildPointReplacement = new PressureWildPointReplacement(1, 1, outputBFileName);
-		/****************************************************************************
-		 * Here we connect the filters starting with the sink filter (Filter 1) which
-		 * we connect to Filter2 the middle filter. Then we connect Filter2 to the
-		 * source filter (Filter3).
-		 ****************************************************************************/
+		SinkFilterB sinkFilterB2 = new SinkFilterB(1,1,wildPointFileName);
+		PressureWildPointReplacement pressureWildPointReplacementFilter = new PressureWildPointReplacement(1, 1, outputBFileName);
 
-		pressureWildPointReplacement.Connect(splitterFilter, 0,1);
+
+		pressureWildPointReplacementFilter.Connect(splitterFilter, 0,1);
 		sinkFilterB2.Connect(pressureWildPointFilter, 0, 0);
 		pressureWildPointFilter.Connect(splitterFilter, 0,0);
 		splitterFilter.Connect(altitudeConvertFilter,0,0); // This esstially says, "connect sinkFilter input port to altitudeConvertFilter output port
@@ -63,9 +58,9 @@ public class PlumberB
 		altitudeConvertFilter.start();
 		temperatureFilter.start();
 		splitterFilter.start();
+		pressureWildPointReplacementFilter.start();
 		pressureWildPointFilter.start();
 		sinkFilterB2.start();
-		pressureWildPointReplacement.start();
 	} // main
 
 } // Plumber
