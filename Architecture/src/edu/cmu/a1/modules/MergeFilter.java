@@ -73,6 +73,7 @@ public class MergeFilter extends FilterFramework
 				
 				Record firstRecord = ReadRecord(0);
 				Record secondRecord = ReadRecord(1);
+				long lastTimeStamp = 0;
 				while(true)
 				{
 					try
@@ -81,31 +82,84 @@ public class MergeFilter extends FilterFramework
 							break;
 						}	
 						if(this.getInputReadPort().get(0).available() == 0 ){
-							WriteOutput(secondRecord, 0);
-							secondRecord = ReadRecord(1);
+							if(secondRecord.getTimeStampLong() != lastTimeStamp)
+							{
+								
+								lastTimeStamp = secondRecord.getTimeStampLong();
+								WriteOutput(secondRecord, 0);
+								secondRecord = ReadRecord(1);
+							}
+							else
+							{
+								secondRecord = ReadRecord(1);
+								continue;
+							}
 						}
 						else if (this.getInputReadPort().get(1).available() == 0 ){
-							WriteOutput(firstRecord, 0);
-							firstRecord = ReadRecord(0);
+							if(firstRecord.getTimeStampLong() != lastTimeStamp)
+							{
+								
+								lastTimeStamp = firstRecord.getTimeStampLong();
+								WriteOutput(firstRecord, 0);
+								firstRecord = ReadRecord(0);
+							}
+							else
+							{
+								firstRecord = ReadRecord(0);
+								continue;
+							}
 						}
 						else
 						{
 							if(firstRecord.getTimeStampLong() < secondRecord.getTimeStampLong())
 							{
-								WriteOutput(firstRecord, 0);
-								firstRecord = ReadRecord(0);
+								if(firstRecord.getTimeStampLong() != lastTimeStamp)
+								{
+									
+									lastTimeStamp = firstRecord.getTimeStampLong();
+									WriteOutput(firstRecord, 0);
+									firstRecord = ReadRecord(0);
+								}
+								else
+								{
+									firstRecord = ReadRecord(0);
+									continue;
+								}
 							}
 							else if(firstRecord.getTimeStampLong() > secondRecord.getTimeStampLong())
 							{
-								WriteOutput(secondRecord, 0);
-								secondRecord = ReadRecord(1);
+								if(secondRecord.getTimeStampLong() != lastTimeStamp)
+								{
+									
+									lastTimeStamp = secondRecord.getTimeStampLong();
+									WriteOutput(secondRecord, 0);
+									secondRecord = ReadRecord(1);
+								}
+								else
+								{
+									secondRecord = ReadRecord(1);
+									continue;
+								}
+								
 							}
 							else if(firstRecord.getTimeStampLong() == secondRecord.getTimeStampLong())
 							{
-								WriteOutput(firstRecord, 0);
-								System.out.println(firstRecord.getTimeStamp());
-								firstRecord = ReadRecord(0);
-								secondRecord = ReadRecord(1);
+								if(firstRecord.getTimeStampLong() != lastTimeStamp)
+								{
+									
+									lastTimeStamp = firstRecord.getTimeStampLong();
+									WriteOutput(firstRecord, 0);
+									firstRecord = ReadRecord(0);
+									secondRecord = ReadRecord(1);
+								}
+								else
+								{
+									firstRecord = ReadRecord(0);
+									secondRecord = ReadRecord(1);
+									continue;
+								}
+								
+								
 							}
 						}
 					}
