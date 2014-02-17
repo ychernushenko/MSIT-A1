@@ -1,9 +1,8 @@
-package edu.cmu.a1.systemC;
+package edu.cmu.a1.modules;
 
 import java.io.IOException;
 
 import edu.cmu.a1.util.Configuration;
-import edu.cmu.a1.util.FilterFramework;
 import edu.cmu.a1.util.Record;
 
 /******************************************************************************************************************
@@ -73,13 +72,17 @@ public class MergeFilter extends FilterFramework
 			*************************************************************/
 				
 				Record firstRecord = ReadRecord(0);
+				System.out.println(firstRecord.getTimeStamp());
 				Record secondRecord = ReadRecord(1);
+				System.out.println(secondRecord.getTimeStamp());
 				while(true)
 				{
 					try
 					{
-						if((this.getInputReadPort().get(0).available() == 0 ) && (this.getInputReadPort().get(1).available() == 0 ))
+						if((this.getInputReadPort().get(0).available() == 0 ) && (this.getInputReadPort().get(1).available() == 0 )){
+							System.out.println("OVER!!!!!!!!!");
 							break;
+						}	
 						if(this.getInputReadPort().get(0).available() == 0 ){
 							WriteOutput(secondRecord, 0);
 							secondRecord = ReadRecord(1);
@@ -103,7 +106,6 @@ public class MergeFilter extends FilterFramework
 							else if(firstRecord.getTimeStampLong() == secondRecord.getTimeStampLong())
 							{
 								WriteOutput(firstRecord, 0);
-								WriteOutput(secondRecord, 0);
 								firstRecord = ReadRecord(0);
 								secondRecord = ReadRecord(1);
 							}

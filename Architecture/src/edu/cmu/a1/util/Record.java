@@ -60,7 +60,7 @@ public class Record {
 	public void setTimeStamp(long timelong){
 		Calendar tCalendar = Calendar.getInstance();
 		tCalendar.setTimeInMillis(timelong);
-		SimpleDateFormat timeStampFormat = new SimpleDateFormat("yyyy:dd:hh:MM:ss");
+		SimpleDateFormat timeStampFormat = new SimpleDateFormat("yyyy:dd:hh:mm:ss");
 		this.timeStamp= timeStampFormat.format(tCalendar.getTime());
 		this.timestamplong = timelong;
 	}

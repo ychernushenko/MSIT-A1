@@ -33,7 +33,7 @@ public class PlumberA
 		/****************************************************************************
 		 * Here we instantiate three filters.
 		 ****************************************************************************/
-		String inputFileName = Configuration.ReadProperty("FlightData"); 
+		String inputFileName = Configuration.ReadProperty("SubSetB"); 
 		String outputFileName = Configuration.ReadProperty("OutputA");
 		SourceFilter sourceFilter = new SourceFilter(1,1,inputFileName);
 		AltitudeConvertFilter altitudeConvertFilter = new AltitudeConvertFilter(1,1);

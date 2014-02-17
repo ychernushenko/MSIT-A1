@@ -3,7 +3,6 @@ package edu.cmu.a1.modules;
 
 import edu.cmu.a1.util.Configuration;
 import edu.cmu.a1.util.Converter;
-import edu.cmu.a1.util.FilterFramework;
 
 /******************************************************************************************************************
  * File:MiddleFilter.java

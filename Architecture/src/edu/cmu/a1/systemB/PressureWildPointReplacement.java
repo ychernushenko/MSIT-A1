@@ -1,8 +1,8 @@
 package edu.cmu.a1.systemB;
 
 
+import edu.cmu.a1.modules.FilterFramework;
 import edu.cmu.a1.util.Configuration;
-import edu.cmu.a1.util.FilterFramework;
 import edu.cmu.a1.util.Record;
 
 import java.io.BufferedWriter;

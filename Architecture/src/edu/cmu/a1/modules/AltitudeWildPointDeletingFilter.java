@@ -1,7 +1,6 @@
-package edu.cmu.a1.systemC;
+package edu.cmu.a1.modules;
 
 import edu.cmu.a1.util.Configuration;
-import edu.cmu.a1.util.FilterFramework;
 import edu.cmu.a1.util.Record;
 
 /******************************************************************************************************************
