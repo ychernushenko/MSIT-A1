@@ -72,15 +72,12 @@ public class MergeFilter extends FilterFramework
 			*************************************************************/
 				
 				Record firstRecord = ReadRecord(0);
-				System.out.println(firstRecord.getTimeStamp());
 				Record secondRecord = ReadRecord(1);
-				System.out.println(secondRecord.getTimeStamp());
 				while(true)
 				{
 					try
 					{
 						if((this.getInputReadPort().get(0).available() == 0 ) && (this.getInputReadPort().get(1).available() == 0 )){
-							System.out.println("OVER!!!!!!!!!");
 							break;
 						}	
 						if(this.getInputReadPort().get(0).available() == 0 ){
@@ -106,6 +103,7 @@ public class MergeFilter extends FilterFramework
 							else if(firstRecord.getTimeStampLong() == secondRecord.getTimeStampLong())
 							{
 								WriteOutput(firstRecord, 0);
+								System.out.println(firstRecord.getTimeStamp());
 								firstRecord = ReadRecord(0);
 								secondRecord = ReadRecord(1);
 							}
